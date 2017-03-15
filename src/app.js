@@ -3,29 +3,27 @@
   var eventBus = new Vue();
 
   Vue.component('list-item', {
-    template: '<li><a href="#" v-on:click="toggleModal($event)">This is a test component!</a><modal v-if="modalVisible"></modal></li>',
+    template: '#list-item-tmpl',
     created: function () {
       var self = this;
       eventBus.$on('resetModals', function () {
-        self.modalVisible = false;
+        self.item.visible = false;
       });
     },
-    data: function () {
-      return {
-        modalVisible: false
-      }
-    },
+    props: ['item'],
     methods: {
       toggleModal: function (e) {
-        e.preventDefault();
+        var itemVisibleState = !this.item.visible;
         eventBus.$emit('resetModals');
-        this.modalVisible = !this.modalVisible;
+        this.item.visible = itemVisibleState;
+        e.preventDefault();
       }
     }
   });
 
   Vue.component('modal', {
-    template: '<div>This is a modal.</div>'
+    template: '#modal-tmpl',
+    props: ['modal']
   });
 
   new Vue({
@@ -33,7 +31,20 @@
     data: function () {
       return {
         message: 'A simple VueJS 2.2.0 example that shows an accordion-style implemention.',
-        items: [1,2,3,4,5]
+        items: [
+          {text:"Dynamic List Item Content 1", visible: false, modal: {text: 'This is dynamic modal text 1.'}},
+          {text:"Dynamic List Item Content 2", visible: false, modal: {text: 'This is dynamic modal text 2.'}},
+          {text:"Dynamic List Item Content 3", visible: false, modal: {text: 'This is dynamic modal text 3.'}},
+          {text:"Dynamic List Item Content 4", visible: false, modal: {text: 'This is dynamic modal text 4.'}},
+          {text:"Dynamic List Item Content 5", visible: false, modal: {text: 'This is dynamic modal text 5.'}}
+        ]
+      }
+    },
+    methods: {
+      updateModalText: function () {
+        for (var i=0; i<this.items.length; i++) {
+          this.items[i].modal.text = "Modified modal text " + i;
+        }
       }
     }
   });

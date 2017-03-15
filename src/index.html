@@ -3,15 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Vue Example</title>
+  <style>
+    [v-cloak] { display: none; }
+  </style>
 </head>
 <body>
 
-  <div id="app">
+  <div id="app" v-cloak>
     <p>{{message}}</p>
+    <button v-on:click="updateModalText">Update Modal Content</button>
     <ul v-for="item in items">
-      <list-item></list-item>
+      <list-item :item="item"></list-item>
     </ul>
   </div>
+
+  <script type="text/x-template" id="list-item-tmpl">
+    <li>
+      <a href="#" v-on:click="toggleModal($event)">
+        {{item.text}} - This is a test component!
+      </a>
+      <modal v-if="item.visible" :modal="item.modal"></modal>
+    </li>
+  </script>
+
+  <script type="text/x-template" id="modal-tmpl">
+    <div>{{modal.text}}</div>
+  </script>
 
   <script src="./vue.js"></script>
   <script src="./app.js"></script>
