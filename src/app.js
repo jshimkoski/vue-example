@@ -32,7 +32,7 @@
     el: '#app',
     data: function () {
       return {
-        message: 'Hello Vue!',
+        message: 'A simple VueJS 2.2.0 example that shows an accordion-style implemention.',
         items: [1,2,3,4,5]
       }
     }
